@@ -11,24 +11,24 @@
     "migrate-supabase": "tsx scripts/migrate-to-supabase.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.490.0",
-    "@supabase/supabase-js": "^2.80.0",
-    "better-sqlite3": "^11.7.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "pg": "^8.16.3",
-    "wrangler": "^3.0.0",
-    "yauzl": "^2.10.0"
+    "@aws-sdk/client-s3": "^3.1162.0",
+    "@supabase/supabase-js": "^2.119.0",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "pg": "^8.23.1",
+    "wrangler": "^4.158.0",
+    "yauzl": "^3.4.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.8",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.10.0",
-    "@types/pg": "^8.15.6",
-    "@types/yauzl": "^2.10.3",
-    "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "@types/yauzl": "^3.4.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

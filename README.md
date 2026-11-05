@@ -42,7 +42,7 @@ Create a `.env.local` file in the project root with:
 R2_ACCESS_KEY_ID=your-access-key-id
 R2_SECRET_ACCESS_KEY=your-secret-access-key
 R2_ENDPOINT=https://3617e178a84ccd9084eced8f55c34fe1.r2.cloudflarestorage.com
-R2_BUCKET=climate-fisheries-data
+R2_BUCKET_NAME=climate-fisheries-data
 CLOUDFLARE_API_TOKEN=your-api-token
 ```
 

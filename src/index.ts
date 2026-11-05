@@ -1,6 +1,4 @@
-import * as dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
-
+import './utils/loadEnv';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { handleZone } from './routes/zone';

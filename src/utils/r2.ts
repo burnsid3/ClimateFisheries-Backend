@@ -1,3 +1,4 @@
+import './loadEnv';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 
 // Initialize S3 client for Cloudflare R2 only if credentials are available
@@ -13,12 +14,12 @@ function getR2Client(): S3Client | null {
   }
   
   if (!r2Client) {
-    const endpoint = (process.env.R2_ENDPOINT || 'https://3617e178a84ccd9084eced8f55c34fe1.r2.cloudflarestorage.com').trim();
+    const endpoint = getR2Endpoint();
     
     // Log configuration for debugging (without exposing secrets)
     console.log('Initializing R2 client:', {
       endpoint,
-      bucket: process.env.R2_BUCKET || 'climate-fisheries-data',
+      bucket: getR2Bucket(),
       hasAccessKey: !!accessKeyId,
       hasSecretKey: !!secretAccessKey,
       accessKeyLength: accessKeyId.length,
@@ -39,8 +40,23 @@ function getR2Client(): S3Client | null {
   return r2Client;
 }
 
-const R2_BUCKET = process.env.R2_BUCKET || 'climate-fisheries-data';
-const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL || 'https://3617e178a84ccd9084eced8f55c34fe1.r2.cloudflarestorage.com/climate-fisheries-data';
+function getR2Bucket(): string {
+  return (process.env.R2_BUCKET_NAME || process.env.R2_BUCKET || 'climate-fisheries-data').trim();
+}
+
+function getR2Endpoint(): string {
+  const explicit = process.env.R2_ENDPOINT?.trim();
+  if (explicit) return explicit;
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID?.trim();
+  if (accountId) return `https://${accountId}.r2.cloudflarestorage.com`;
+  return 'https://3617e178a84ccd9084eced8f55c34fe1.r2.cloudflarestorage.com';
+}
+
+function getR2PublicBase(): string {
+  const explicit = process.env.R2_PUBLIC_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, '');
+  return `${getR2Endpoint().replace(/\/$/, '')}/${getR2Bucket()}`;
+}
 
 /**
  * Get the public URL for a file in R2
@@ -59,7 +75,7 @@ export function getR2PublicUrl(key: string): string {
     normalizedKey = `Data/${normalizedKey}`;
   }
   
-  return `${R2_PUBLIC_URL}/${normalizedKey}`;
+  return `${getR2PublicBase()}/${normalizedKey}`;
 }
 
 /**
@@ -74,7 +90,7 @@ export async function fetchFileFromR2(key: string): Promise<string> {
     }
 
     const command = new GetObjectCommand({
-      Bucket: R2_BUCKET,
+      Bucket: getR2Bucket(),
       Key: key,
     });
 
@@ -98,7 +114,7 @@ export async function fetchFileFromR2(key: string): Promise<string> {
     // Log error details for debugging
     console.error('R2 fetch error:', {
       key,
-      bucket: R2_BUCKET,
+      bucket: getR2Bucket(),
       errorName: error.name,
       errorMessage: error.message,
       httpStatusCode: error.$metadata?.httpStatusCode,

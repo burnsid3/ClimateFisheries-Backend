@@ -1,7 +1,5 @@
 import { join } from 'path';
-import * as dotenv from 'dotenv';
-
-dotenv.config({ path: '.env.local' });
+import './loadEnv';
 
 // Database type: 'supabase', 'd1', or 'sqlite'
 const DB_TYPE = process.env.DB_TYPE || 'sqlite';
